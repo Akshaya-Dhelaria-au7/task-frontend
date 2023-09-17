@@ -26,7 +26,6 @@ export const commentSlice = createSlice({
         state.comments = []
       })
       .addCase(getComments.fulfilled, (state, action) => {
-        console.log(action,'action in comments')
         state.comments = action.payload
       })
       .addCase(getComments.rejected, (state, action) => {
