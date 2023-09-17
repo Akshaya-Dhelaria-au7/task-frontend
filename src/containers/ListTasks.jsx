@@ -9,6 +9,9 @@ import CreateOrEditTask from './CreateOrEditTask';
 import { getTasks } from '../redux/features/taskSlice';
 import FilterTask from './FilterTask';
 import SearchTask from './SearchTask';
+import { findLabel } from '../utils/findlabel';
+import { taskPriorities } from '../contants/taskPriorties';
+import { taskStatus } from '../contants/taskStatus';
 
 function ListTask() {
     const [editTask, setEditTask] = useState();
@@ -28,6 +31,7 @@ function ListTask() {
 
     useEffect(() => {
         reload()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const snackbarVisibility = ({ message }) => {
@@ -68,7 +72,7 @@ function ListTask() {
             width: 150,
             editable: false,
             renderCell: ({ row }) => (
-                <Chip label={row.priority} color={row.type === 'bug' ? 'error' : 'success'} variant="outlined" />
+                <Chip label={findLabel(row.priority, taskPriorities)} color={row.priority === 'critical' ? 'error' : row.priority === 'normal' ? 'success' : row.priority === 'urgent' ? 'warning' : 'primary'} variant="contained" />
             )
         },
         {
@@ -77,7 +81,7 @@ function ListTask() {
             width: 150,
             editable: false,
             renderCell: ({ row }) => (
-                <Chip label={row.status} variant="contained" />
+                <Chip label={findLabel(row.status, taskStatus)} color={row.status === 'inProgress' ? 'info' : row.status === 'todo' ? 'primary' : row.status === 'done' ? 'success' : 'secondary'} variant="outlined" />
             )
         },
         {

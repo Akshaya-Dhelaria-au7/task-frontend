@@ -1,30 +1,32 @@
 import { Button, Card, CardContent, Grid, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { createComment, getComment } from "../api/comments";
-import Loader from '../components/Loader';
+import { createComment } from "../api/comments";
+import { useDispatch, useSelector } from "react-redux";
+import { getComments } from "../redux/features/commentsSlice";
 
 const Comments = ({ taskId, snackbarVisibility }) => {
-    const [previousComments, setPreviousCommentData] = useState([])
     const [commentInput, setCommentInput] = useState()
+    const dispatch = useDispatch()
+    const { comments: { comments: userComments } } = useSelector((state) => {
+        return state
+    });
 
-    const getComments = async () => {
-        const data = await getComment(taskId);
-        setPreviousCommentData(data)
+    const getComment = async () => {
+        dispatch(getComments(taskId));
     }
 
     const saveComment = async () => {
         const { status, message } = await createComment({ comment: commentInput, taskId });
         if (status === 200) {
-            snackbarVisibility({ message })
+            snackbarVisibility({ message });
+            getComment();
         }
     }
 
     useEffect(() => {
-        getComments()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        getComment()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [taskId])
-
-    if (!previousComments.length && taskId) return <Loader />
 
     return (
         <>
@@ -37,10 +39,10 @@ const Comments = ({ taskId, snackbarVisibility }) => {
                     <Button variant="outlined" disabled={!commentInput?.length} onClick={saveComment} color="primary">Save</Button>
                 </Grid>
             </Grid>
-            {Boolean(previousComments.length) &&
+            {Boolean(userComments.length) &&
                 <Card sx={{ p: 2, marginTop: '1rem' }}>
                     <Typography>Previous Comments</Typography>
-                    {previousComments.map(({ comment, createdAt, id, user }) => (
+                    {userComments.map(({ comment, createdAt, id, user }) => (
                         <CardContent>
                             <Grid container spacing={2} key={id} justifyContent={'space-between'}>
                                 <Grid item lg={12}>

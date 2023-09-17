@@ -12,7 +12,7 @@ import Comments from "./Comments";
 
 function CreateOrEditTask({ values = {}, reload, snackbarVisibility }) {
     const initialValues = values ? values : {
-        name: '', description: '', status: '', dueDate: '', priority: ''
+        name: '', description: '', status: '', dueDate: new Date(), priority: ''
     }
 
     const [open, setOpen] = useState(true);

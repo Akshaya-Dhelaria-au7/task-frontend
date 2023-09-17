@@ -10,33 +10,30 @@ export const getTasks = createAsyncThunk('tasks/get', async () => {
   return tasks;
 });
 
-export const addTask = createAsyncThunk('tasks/add', async (task, thunkApi) => {
+export const addTask = createAsyncThunk('tasks/add', async (task) => {
   try {
     const createdTask = await taskService.create(task);
     return createdTask;
   } catch (err) {
     console.log(err);
-    return thunkApi.rejectWithValue(err);
   }
 });
 
-export const filterTask = createAsyncThunk('tasks/filter', async (val, thunkApi) => {
+export const filterTask = createAsyncThunk('tasks/filter', async (val) => {
   try {
     const filteredTask = await taskService.filterTask(val);
     return filteredTask;
   } catch (err) {
     console.log(err);
-    return thunkApi.rejectWithValue(err);
   }
 });
 
-export const searchTask = createAsyncThunk('tasks/search', async (val, thunkApi) => {
+export const searchTask = createAsyncThunk('tasks/search', async (val) => {
   try {
     const searchedTask = await taskService.searchTasks(val);
     return searchedTask;
   } catch (err) {
     console.log(err);
-    return thunkApi.rejectWithValue(err);
   }
 });
 

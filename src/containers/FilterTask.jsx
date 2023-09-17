@@ -26,12 +26,6 @@ const FilterTask = () => {
     return (
         <ModalComponent open={open} handleClose={handleClose}>
             <Grid container spacing={2}>
-                {/* <Grid item lg={12} xs={10} sm={10}>
-                    <TextField fullWidth label="Filter By Name" name="filterByName" onChange={(e) => onChangeHandler(e.target.value, 'name')} />
-                </Grid>
-                <Grid item lg={12} xs={10} sm={10}>
-                    <TextField fullWidth label="Filter By Description" name="filterByDescription" onChange={(e) => onChangeHandler(e.target.value, 'description')} />
-                </Grid> */}
                 <Grid item lg={12} xs={10} sm={10}>
                     <FormControl fullWidth>
                         <InputLabel>Status</InputLabel>
