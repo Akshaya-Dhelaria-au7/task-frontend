@@ -20,8 +20,6 @@ async function deleteTaskApi(id, key) {
     return data
 }
 
-
-
 export {
     createTaskApi,
     listTasksApi,

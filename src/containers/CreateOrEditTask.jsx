@@ -8,6 +8,7 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import dayjs from 'dayjs';
 import { taskStatus } from "../contants/taskStatus";
 import { taskPriorities } from "../contants/taskPriorties";
+import Comments from "./Comments";
 
 function CreateOrEditTask({ values = {}, reload, snackbarVisibility }) {
     const initialValues = values ? values : {
@@ -110,6 +111,7 @@ function CreateOrEditTask({ values = {}, reload, snackbarVisibility }) {
                     <Button variant="outlined" color="primary" onClick={() => setOpen(!open)}>Cancel</Button>
                 </Grid>
             </Grid>
+            {values.id && <Comments taskId={values.id} snackbarVisibility={snackbarVisibility} />}
         </ModalComp>
     )
 }
