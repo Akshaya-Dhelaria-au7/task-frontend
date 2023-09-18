@@ -10,9 +10,9 @@ import { taskStatus } from "../contants/taskStatus";
 import { taskPriorities } from "../contants/taskPriorties";
 import Comments from "./Comments";
 
-function CreateOrEditTask({ values = {}, reload, snackbarVisibility }) {
+function CreateOrEditTask({ values = {}, reload, snackbarVisibility, cancelHandler, status }) {
     const initialValues = values ? values : {
-        name: '', description: '', status: '', dueDate: new Date(), priority: ''
+        name: '', description: '', status: '', dueDate: '', priority: ''
     }
 
     const [open, setOpen] = useState(true);
@@ -96,7 +96,7 @@ function CreateOrEditTask({ values = {}, reload, snackbarVisibility }) {
                                 sx={{ width: "100%" }}
                                 label="Due Date"
                                 format="DD/MM/YYYY"
-                                defaultValue={dayjs(initialVal.dueDate)}
+                                defaultValue={dayjs(initialVal.dueDate) || ''}
                                 onChange={(newValue) => onChangeHandler(newValue['$d'], 'dueDate')}
                             />
                         </DemoContainer>
@@ -108,7 +108,10 @@ function CreateOrEditTask({ values = {}, reload, snackbarVisibility }) {
                     <Button variant="contained" onClick={() => decideTask(Object.keys(values)?.length ? 'edit' : 'create')} color="primary">{Object.keys(values).length ? 'Edit' : 'Create'} Task</Button>
                 </Grid>
                 <Grid item>
-                    <Button variant="outlined" color="primary" onClick={() => setOpen(!open)}>Cancel</Button>
+                    <Button variant="outlined" color="primary" onClick={() => {
+                        setOpen(!open)
+                        cancelHandler(!status)
+                    }}>Cancel</Button>
                 </Grid>
             </Grid>
             {values.id && <Comments taskId={values.id} snackbarVisibility={snackbarVisibility} />}

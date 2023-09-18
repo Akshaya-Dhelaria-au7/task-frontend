@@ -5,6 +5,9 @@ import ModalComponent from '../components/ModalComponent';
 import { taskStatus } from '../contants/taskStatus';
 import { taskPriorities } from '../contants/taskPriorties';
 import { filterTask } from '../redux/features/taskSlice';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 
 const FilterTask = () => {
     const [open, setOpen] = useState(true);
@@ -14,6 +17,9 @@ const FilterTask = () => {
 
 
     const onChangeHandler = (value, fieldName) => {
+        if (fieldName === 'dueDate') {
+            value = `${value['$y']}-${value['$M'] + 1}-${value['$D']}`
+        }
         const newObj = { ...filteredVal, [fieldName]: value };
         setFilteredVal({ ...newObj });
     }
@@ -45,6 +51,18 @@ const FilterTask = () => {
                             ))}
                         </Select>
                     </FormControl>
+                </Grid>
+                <Grid item lg={12} xs={10} sm={10}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DemoContainer components={['DatePicker', 'DatePicker']}>
+                            <DatePicker
+                                sx={{ width: "100%" }}
+                                label="Due Date"
+                                format="DD/MM/YYYY"
+                                onChange={(newValue) => onChangeHandler(newValue, 'dueDate')}
+                            />
+                        </DemoContainer>
+                    </LocalizationProvider>
                 </Grid>
                 <Grid item lg={12} xs={10} sm={10}>
                     <Button variant="outlined" onClick={() => getFilteredTask()}>Filter</Button>

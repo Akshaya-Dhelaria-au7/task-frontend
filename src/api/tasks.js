@@ -15,8 +15,8 @@ async function editTasksApi(values) {
     return data
 }
 
-async function deleteTaskApi(id, key) {
-    const { data } = await connector.delete(`/deleteTaskList/${id}/${key}`)
+async function deleteTaskApi(id) {
+    const { data } = await connector.delete(`/deleteTaskList/${id}`)
     return data
 }
 

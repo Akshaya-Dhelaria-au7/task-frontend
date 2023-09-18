@@ -15,10 +15,10 @@ import { taskStatus } from '../contants/taskStatus';
 
 function ListTask() {
     const [editTask, setEditTask] = useState();
+    const [createTaskComp, setCreateTaskComp] = useState(false);
     const [showSnackbar, setShowSnackbar] = useState(false);
     const [filterModal, setShowFilterModal] = useState(false);
     const [searchModal, setShowSearchModal] = useState(false);
-    const [createTaskComp, setCreateTaskComp] = useState(false);
     const [showSnackbarMessage, setShowSnackbarMessage] = useState();
     const dispatch = useDispatch();
 
@@ -31,7 +31,7 @@ function ListTask() {
 
     useEffect(() => {
         reload()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const snackbarVisibility = ({ message }) => {
@@ -40,8 +40,8 @@ function ListTask() {
     }
 
     const deleteTask = async (task) => {
-        const { key, id } = task || {}
-        const resultAfterDeletingTask = await deleteTaskApi(id, key)
+        const { id } = task || {}
+        const resultAfterDeletingTask = await deleteTaskApi(id)
         if (resultAfterDeletingTask.status === 200) {
             snackbarVisibility({ message: 'Deleted Task Successfully' })
             reload()
@@ -126,13 +126,13 @@ function ListTask() {
         }
     ];
 
-    const rows = tasks.map((p) => {
+    const rows = (tasks || []).map((p) => {
         return { id: p.id, name: p.name, description: p.description, status: p.status, priority: p.priority, dueDate: p.dueDate?.toString().split('T')[0] }
     })
 
     return (
         <>
-            <Card>
+            <Card sx={{ m: 2 }}>
                 <CardContent>
                     <Grid container justifyContent={'center'}>
                         <Grid container justifyContent={'flex-end'} item lg={6} sm={6} xl={6} xs={6}>
@@ -153,8 +153,8 @@ function ListTask() {
                 </CardContent>
                 <Table rows={rows} columns={columns} />
             </Card>
-            {createTaskComp && <CreateOrEditTask reload={reload} snackbarVisibility={({ message }) => snackbarVisibility({ message })} />}
-            {editTask && <CreateOrEditTask values={editTask} reload={reload} snackbarVisibility={({ message }) => snackbarVisibility({ message })} />}
+            {createTaskComp && <CreateOrEditTask cancelHandler={setCreateTaskComp} status={createTaskComp} reload={reload} snackbarVisibility={({ message }) => snackbarVisibility({ message })} />}
+            {editTask && <CreateOrEditTask values={editTask} reload={reload} cancelHandler={setEditTask} status={editTask} snackbarVisibility={({ message }) => snackbarVisibility({ message })} />}
             <SimpleSnackbar message={showSnackbarMessage} setOpen={setShowSnackbar} open={showSnackbar} />
             {filterModal && <FilterTask />}
             {searchModal && <SearchTask />}
